@@ -35,7 +35,7 @@ def plot_comparison(history1, label1, history2, label2):
 
 
 # Load your trained model
-model = tf.keras.models.load_model('trained_model.h5')
+model = tf.keras.models.load_model('trained_model.keras')
 
 st.title("Handwritten Digit Recognition 🎨")
 st.markdown("Draw a digit (0–9) below and let the model predict it!")
