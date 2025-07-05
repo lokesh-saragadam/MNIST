@@ -3,4 +3,3 @@ keras
 streamlit
 streamlit-drawable-canvas
 opencv-python
-libgl1
