@@ -3,6 +3,36 @@ from streamlit_drawable_canvas import st_canvas
 import numpy as np
 import cv2
 import tensorflow as tf
+import json
+
+# Load it back
+with open("history_adam.json", "r") as f:
+    loaded_history1 = json.load(f)
+with open("history_adadelta.json", "r") as f:
+    loaded_history2 = json.load(f)   
+
+
+import matplotlib.pyplot as plt
+def plot_comparison(history1, label1, history2, label2):
+    st.subheader("📊 Optimizer Comparison: Accuracy & Loss")
+    fig, axs = plt.subplots(1, 2, figsize=(12, 4))
+
+    # Accuracy
+    axs[0].plot(history1['accuracy'], label=label1)
+    axs[0].plot(history2['accuracy'], label=label2)
+    axs[0].set_title("Training Accuracy")
+    axs[0].legend()
+
+    # Loss
+    axs[1].plot(history1['loss'], label=label1)
+    axs[1].plot(history2['loss'], label=label2)
+    axs[1].set_title("Training Loss")
+    axs[1].legend()
+
+    fig.tight_layout()
+    st.pyplot(fig)
+    plt.clf()  # clear plot after display
+
 
 # Load your trained model
 model = tf.keras.models.load_model('trained_model.h5')
@@ -37,3 +67,27 @@ if canvas_result.image_data is not None:
     if st.button("Predict"):
         pred = model.predict(img)
         st.write(f"### Predicted Digit: {np.argmax(pred)}")
+
+with st.expander("📚 What I Learned During This Project"):
+    st.markdown("""
+### Optimizer Insights
+- **Adam** learns much faster than **Adadelta**, especially on image data.
+- Adam adapts the learning rate for each parameter using momentum and RMS.
+- Adadelta is slower and didn't reach high accuracy in 60 epochs (~93%).
+
+### Loss Function Lessons
+- Using `SparseCategoricalCrossentropy` works with integer labels like `y = [0, 1, 4]`.
+- `CategoricalCrossentropy` works with one-hot encoded labels like `y = [[1,0,0,...]]`.
+- Mixing them caused low accuracy. Fixing this boosted accuracy dramatically.
+
+### CNN vs Dense
+- Fully connected layers only gave ~93%.
+- Adding `Conv2D` + `MaxPooling` layers helped the model learn spatial features → accuracy jumped to **99.6%**.
+
+### Preprocessing
+- Scaling input images with `/ 255.0` was essential.
+- Adding Dropout layers helped avoid overfitting.
+    """)
+
+
+plot_comparison(loaded_history1, "Adadelta", loaded_history2, "Adam")        
