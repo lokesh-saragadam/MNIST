@@ -90,4 +90,4 @@ with st.expander("📚 What I Learned During This Project"):
     """)
 
 
-plot_comparison(loaded_history1, "Adadelta", loaded_history2, "Adam")        
+st.image('Screenshot 2025-07-05 192337.png')
