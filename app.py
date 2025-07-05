@@ -3,36 +3,8 @@ from streamlit_drawable_canvas import st_canvas
 import numpy as np
 import cv2
 import tensorflow as tf
-import json
 
 # Load it back
-with open("history_adam.json", "r") as f:
-    loaded_history1 = json.load(f)
-with open("history_adadelta.json", "r") as f:
-    loaded_history2 = json.load(f)   
-
-
-import matplotlib.pyplot as plt
-def plot_comparison(history1, label1, history2, label2):
-    st.subheader("📊 Optimizer Comparison: Accuracy & Loss")
-    fig, axs = plt.subplots(1, 2, figsize=(12, 4))
-
-    # Accuracy
-    axs[0].plot(history1['accuracy'], label=label1)
-    axs[0].plot(history2['accuracy'], label=label2)
-    axs[0].set_title("Training Accuracy")
-    axs[0].legend()
-
-    # Loss
-    axs[1].plot(history1['loss'], label=label1)
-    axs[1].plot(history2['loss'], label=label2)
-    axs[1].set_title("Training Loss")
-    axs[1].legend()
-
-    fig.tight_layout()
-    st.pyplot(fig)
-    plt.clf()  # clear plot after display
-
 
 # Load your trained model
 model = tf.keras.models.load_model('trained_model.keras')
@@ -89,5 +61,5 @@ with st.expander("📚 What I Learned During This Project"):
 - Adding Dropout layers helped avoid overfitting.
     """)
 
-
-plot_comparison(loaded_history1,"Adam",loaded_history2,"Adadelta")
+st.subheader("📊 Optimizer Comparison: Accuracy & Loss")
+st.image('Screenshot 2025-07-05 192337.png')
