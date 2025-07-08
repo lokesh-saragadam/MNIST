@@ -52,8 +52,7 @@ with st.expander("📚 What I Learned During This Project"):
 - `CategoricalCrossentropy` works with one-hot encoded labels like `y = [[1,0,0,...]]`.
 - Mixing them caused low accuracy. Fixing this boosted accuracy dramatically.
 
-### CNN vs Dense
-- Fully connected layers only gave ~93%.
+### CNN 
 - Adding `Conv2D` + `MaxPooling` layers helped the model learn spatial features → accuracy jumped to **99.6%**.
 
 ### Preprocessing
